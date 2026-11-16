@@ -40,3 +40,9 @@ Log in with the backend's seeded mock parent account. Accounts are created by `m
 | Production build       | `pnpm build`                                                                                                                      |
 
 The E2E specs change data: they buy books, set PIN 1234, and subscribe then cancel on the seeded parent account. They run against the backend's shared database, so they change the seeded parent's data. The buy test skips once no locked books are left.
+
+For a check that changes nothing, run only the smoke spec. It opens every screen as the seeded parent (including Child view) without buying, subscribing or touching the PIN:
+
+```bash
+E2E_PARENT_EMAIL=... E2E_PARENT_PASSWORD=... E2E_API_BASE_URL=http://localhost:9998/api/v1 pnpm e2e smoke
+```
