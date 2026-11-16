@@ -20,6 +20,7 @@ interface BookViewerProps {
   onClose: () => void
 }
 
+const OPEN_TIMEOUT_MS = 10_000
 const FONT_CSS = 'https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap'
 
 const pageButton =
@@ -58,12 +59,18 @@ export function BookViewer({ data, title, onClose }: BookViewerProps) {
 
   useEffect(() => {
     let cancelled = false
+    let opened = false
     let epub: Book | undefined
+    // A malformed EPUB makes epubjs hang instead of throwing, so give up if no page shows in time.
+    const timer = setTimeout(() => {
+      if (!cancelled && !opened) setFailed(true)
+    }, OPEN_TIMEOUT_MS)
 
     // ponytail: one page per EPUB section (picture books). A long text section still pages with
     // Next/Back but keeps its number; switch to epub.locations if text-heavy books arrive.
     const report = (loc: Location) => {
       if (cancelled || !epub) return
+      opened = true
       const total = epub.spine.last().index + 1
       setPos({ page: loc.start.index + 1, total, atStart: loc.atStart, atEnd: loc.atEnd })
     }
@@ -97,6 +104,7 @@ export function BookViewer({ data, title, onClose }: BookViewerProps) {
 
     return () => {
       cancelled = true
+      clearTimeout(timer)
       renditionRef.current = undefined
       epub?.destroy()
     }
@@ -120,7 +128,7 @@ export function BookViewer({ data, title, onClose }: BookViewerProps) {
     return () => document.removeEventListener('keydown', onKey)
   }, [])
 
-  const pageLabel = pos ? `Page ${pos.page} of ${pos.total}` : 'Opening book…'
+  const pageLabel = pos ? `Page ${pos.page} of ${pos.total}` : failed ? '' : 'Opening book…'
 
   return (
     <div
