@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+
+/* Design tokens from docs/design/mainstory-apps.dc.html (#library). */
+@theme {
+  --font-display: 'Baloo 2', ui-rounded, sans-serif;
+  --font-sans: 'Nunito', ui-rounded, system-ui, sans-serif;
+
+  --color-primary: #df552e;
+  --color-primary-hover: #b8441f;
+  --color-ink: #2d291f;
+  --color-ink-body: #4a453b;
+  --color-muted: #595959;
+  --color-subtle: #8f887a;
+
+  --color-cream: #fffcf3;
+  --color-cream-2: #fff7d7;
+  --color-butter: #fff2cc;
+  --color-sun: #ffcc08;
+  --color-sun-ink: #4a3b00;
+
+  --color-line: #f3e9d2;
+  --color-line-2: #ede3cb;
+  --color-line-3: #f6f0e0;
+  --color-field: #f6f3ec;
+  --color-chip: #efede8;
+
+  --color-teal-50: #bbe9eb;
+  --color-teal-400: #3dbfc5;
+  --color-teal-700: #0b6e73;
+  --color-teal-900: #0b4f53;
+
+  --color-lilac-50: #f1e5ff;
+  --color-lilac-300: #c0add6;
+  --color-lilac-700: #5b4b73;
+  --color-lilac-900: #3a2558;
+
+  --color-danger-bg: #ffdccf;
+  --color-danger-ink: #c2410c;
+  --color-danger-strong: #9a3412;
+
+  --color-night-bg: #1e1c2a;
+  --color-night-surface: #2c2a3d;
+  --color-night-text: #f4eedc;
+  --color-night-muted: #b9b0cc;
+  --color-night-accent: #f1e5ff;
+
+  --color-scrim: rgb(45 41 31 / 0.5);
+  --color-scrim-teal: rgb(11 79 83 / 0.55);
+
+  --radius-xl: 14px;
+  --radius-2xl: 16px;
+  --radius-3xl: 18px;
+  --radius-4xl: 24px;
+  --radius-5xl: 28px;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-teal-400);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
