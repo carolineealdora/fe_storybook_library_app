@@ -137,5 +137,6 @@ Admin app (E1–E5), sign-up, forgot/reset password, child profiles, offline, re
 - **Checkout routes:** `/books/:id/checkout` and `/subscription/checkout` instead of `/checkout/*/[orderId]`. The API has no endpoint to read one order, so the order travels in router state. Reloading a checkout page goes back to the book or the offer page.
 - **Reader paging:** epubjs `locations` gave wrong totals for short picture-book pages, so the label counts sections. A long text section still pages with Next/Back but keeps one number. Switch to `locations` if text-heavy books are added.
 - **Reader font:** pages render in an iframe, so the Baloo 2 stylesheet is injected there without blocking the page.
-- **Dev data:** `scripts/seed-books.py` uploads the six design books (cover PNG + 5-page EPUB each) through the admin API. Re-running it skips books that already exist.
+- **Dev data:** `scripts/seed-books.py` uploads the six design books (cover PNG + 5-page EPUB each) through the admin API, which now lives in `storybook_management_app` (backend STORY-4: the library API serves parents only). Re-running it skips books that already exist.
+- **Ports:** both backends default to 9999. Locally the library API runs on 9998 and the app points at it through `.env.local`.
 - **Known console noise:** epubjs's sandboxed iframe makes Chrome log "Blocked script execution in 'about:srcdoc'" (EPUB scripts are blocked on purpose) and a deprecated `unload` warning. The E2E error watcher allows only these two.
