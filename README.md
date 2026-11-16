@@ -1,0 +1,39 @@
+# StoryBook by MainStory: library app for parents and kids
+
+Vite + React + TypeScript single-page app for the Digital Storybook Library (parent and child views).
+It talks to the Go backend in `../storybook_library_app`.
+
+- Spec and decisions: [docs/specs/storybook-library-app.md](docs/specs/storybook-library-app.md)
+- Design: [docs/design/mainstory-apps.dc.html](docs/design/mainstory-apps.dc.html) (section `#library`)
+- API contract: `../storybook_library_app/docs/API-contracts.md`
+
+## Run it
+
+```bash
+corepack enable pnpm        # once
+pnpm install
+cp .env.example .env.local  # VITE_API_BASE_URL, default http://localhost:9999/api/v1
+pnpm dev                    # http://localhost:5173
+```
+
+The backend seeds the accounts but no books. With the backend running, add the six sample books from the design:
+
+```bash
+ADMIN_PASSWORD=... python3 scripts/seed-books.py                  # uses http://localhost:9999/api/v1
+ADMIN_PASSWORD=... API_BASE_URL=http://localhost:9998/api/v1 python3 scripts/seed-books.py
+```
+
+Log in with the backend's seeded mock parent account. Accounts are created by `make seed` in `storybook_management_app` from its `SEED_PARENT_*` / `SEED_ADMIN_*` env vars (see the backend README). The seed script and E2E read them from `ADMIN_EMAIL` / `ADMIN_PASSWORD` and `E2E_PARENT_EMAIL` / `E2E_PARENT_PASSWORD`, so no password is stored in this repo.
+
+## Checks
+
+| Purpose                | Command                                                                                                          |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Typecheck              | `pnpm typecheck`                                                                                                 |
+| Lint                   | `pnpm lint`                                                                                                      |
+| Format                 | `pnpm format`                                                                                                    |
+| Unit + component tests | `pnpm test` (single file: `pnpm vitest run <path>`)                                                              |
+| E2E                    | `E2E_PARENT_PASSWORD=... pnpm e2e` (backend + seeded books required; set `E2E_API_BASE_URL` for another backend) |
+| Production build       | `pnpm build`                                                                                                     |
+
+The E2E specs change data: they buy books, set PIN 1234, and subscribe then cancel on the seeded parent account. The buy test skips when no locked books are left. Run them against a throwaway database.
