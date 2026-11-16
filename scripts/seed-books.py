@@ -4,8 +4,9 @@
 Builds small picture-book EPUBs and PNG covers with the standard library and uploads them
 through the admin API. Safe to re-run: books that already exist (same title) are skipped.
 
-    ADMIN_PASSWORD=... python3 scripts/seed-books.py                      # http://localhost:9999/api/v1
-    ADMIN_PASSWORD=... API_BASE_URL=http://localhost:9998/api/v1 python3 scripts/seed-books.py
+    ADMIN_PASSWORD=... python3 scripts/seed-books.py    # backend API, default http://localhost:9999/api/v1
+
+Books are created through the backend's admin API, so they land in the backend's shared database.
 
 ADMIN_EMAIL (default admin@mainstory.test) and ADMIN_PASSWORD are the backend's seeded mock admin
 (SEED_ADMIN_* in storybook_management_app). The password is required and never stored here.

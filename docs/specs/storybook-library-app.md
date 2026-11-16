@@ -33,7 +33,8 @@ Status: **implemented** · 2026-11-16 (see "As built" at the end for where the b
   - Test network mocking: `vi.stubGlobal('fetch', …)` at the boundary.
 - Fonts: Baloo 2 + Nunito through a Google Fonts `<link>` in `index.html` (no dependency).
 - Single-page app: tokens live in `localStorage` and the API needs a bearer header. Route components in `src/routes/` stay thin and compose `src/features/*`. The route table lives in `src/router.tsx`.
-- Env: `VITE_API_BASE_URL` (default `http://localhost:9999/api/v1`).
+- **Data:** the frontend has no database. All data goes through the backend API (`../storybook_library_app`), which shares one PostgreSQL database with `storybook_management_app`.
+- Env: `VITE_API_BASE_URL` (default `http://localhost:9999/api/v1`, the backend's `make run`).
 - Dev server: `pnpm dev` → http://localhost:5173.
 
 ## Design tokens (from the design file → `src/styles/tokens.css` + Tailwind theme)
