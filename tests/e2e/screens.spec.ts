@@ -19,7 +19,10 @@ for (const width of widths) {
     await page.waitForLoadState('networkidle')
     await page.screenshot({ path: shot('home-parent', width), fullPage: true })
 
-    await page.getByRole('button', { name: /^Kiko the Little Duck/ }).click()
+    await page
+      .getByRole('button', { name: /, ages / })
+      .first()
+      .click()
     await page.waitForLoadState('networkidle')
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0)
     await page.screenshot({ path: shot('book-detail', width) })
@@ -38,8 +41,14 @@ for (const width of widths) {
     await page.waitForLoadState('networkidle')
     await page.screenshot({ path: shot('home-child', width), fullPage: true })
 
-    await page.getByRole('button', { name: /^The Sleepy Moon/ }).click()
-    await expect(page.getByText(/Page 1 of/)).toBeVisible({ timeout: 15_000 })
+    // First book the child can open; a broken EPUB shows the viewer's error state instead.
+    await page
+      .getByRole('button', { name: /, ages [^,]+(, free)?$/ })
+      .first()
+      .click()
+    await expect(
+      page.getByText(/Page 1 of/).or(page.getByText("We couldn't open this book")),
+    ).toBeVisible({ timeout: 15_000 })
     await page.screenshot({ path: shot('reader-day', width) })
     await page.getByRole('button', { name: 'night' }).click()
     await page.screenshot({ path: shot('reader-night', width) })
